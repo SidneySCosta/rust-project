@@ -1,3 +1,4 @@
+use actix_cors::Cors;
 use actix_files as fs;
 use actix_web::{web, App, HttpResponse, HttpServer};
 use futures_util::stream::StreamExt;
@@ -29,6 +30,9 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
+            .wrap(
+                Cors::permissive(), // permitindo cors para testes
+            )
             .route("/upload", web::post().to(upload))
             .service(fs::Files::new("/download", "uploads/"))
     })
